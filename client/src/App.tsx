@@ -1,24 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect, useReducer } from 'react';
 import './App.css';
 
 const App: React.FC = () => {
+  const [ count, setCount ] = useState(0)
+  useEffect(() => {
+    console.log(`you click ${count} time`)
+    return () => {
+      console.log('1111')
+    }
+  }, [count])
+  const [ counts , dispatch ] = useReducer((state, action) => {
+    switch(action){
+      case 'add':
+        return state + 1
+      case 'sub':
+        return state - 1
+      default:
+        return state
+    }
+  }, 0)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <p>已经点击了{ counts }次</p>
+      <button onClick={() => {setCount(count+1)}}>增加</button>
+      <button onClick={() => {setCount(count-1)}}>删除</button>
+      <button onClick={() => dispatch('add')}>add</button>
+      <button onClick={() => dispatch('sub')}>sub</button>
     </div>
   );
 }
